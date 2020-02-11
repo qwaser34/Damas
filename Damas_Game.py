@@ -103,6 +103,13 @@ class PiesesWhiteBlack(DamasChinas):
                 self.Board[RPcurrent][CPcurrent] = ' '
                 self.Board[RPlate][CPlate] = self.Pw
             else:
+                if(self.RPlate%2 != 0 and self.CPlate%2 == 0 or self.RPlate%2 == 0 and self.CPlate%2 != 0):
+                    self.Board[RPcurrent][CPcurrent] = self.Pw
+        else:    
+            if(self.Board[RPlate][CPlate] != ' '):
+                self.Board[RPcurrent][CPcurrent] = ' '
+                self.Board[RPlate][CPlate] = self.Pw
+            else:
                 self.Board[RPcurrent][CPcurrent] = self.Pw
 
     def pre(self):
