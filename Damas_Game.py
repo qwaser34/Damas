@@ -105,12 +105,34 @@ class PiesesWhiteBlack(DamasChinas):
             else:
                 if(self.RPlate%2 != 0 and self.CPlate%2 == 0 or self.RPlate%2 == 0 and self.CPlate%2 != 0):
                     self.Board[RPcurrent][CPcurrent] = self.Pw
-        else:    
-            if(self.Board[RPlate][CPlate] != ' '):
-                self.Board[RPcurrent][CPcurrent] = ' '
-                self.Board[RPlate][CPlate] = self.Pw
-            else:
-                self.Board[RPcurrent][CPcurrent] = self.Pw
+                else:
+                    self.Board[RPcurrent][CPcurrent] = self.Pw
+        else:
+            if(self.RPlate%2 != 0 and self.CPlate%2 == 0 or self.RPlate%2 == 0 and self.CPlate%2 != 0):
+                self.Board[RPcurrent][CPcurrent] = self.Pb
+                self.Board[RPlate][CPlate] = '⬜'
+            else:    
+                if(self.Board[RPlate][CPlate] != ' '):
+                    self.Board[RPcurrent][CPcurrent] = ' '
+                    self.Board[RPlate][CPlate] = self.Pb
+                else:
+                    self.Board[RPcurrent][CPcurrent] = self.Pb
+
+
+    def players (self, player1, player2,turn):
+        self.player1 = player1
+        self.player2 = player2
+        self.turn = turn
+
+        self.turn = True
+        if(self.turn == True):
+            self.player1 = self.Board[RPcurrent][CPcurrent]
+            self.player1 = self.Board[RPlate][CPlate]
+            self.turn = False
+        else:
+            self.player2 = self.Board[RPcurrent][CPcurrent]
+            self.player2 = self.Board[RPlate][CPlate]
+            self.turn = True
 
     def pre(self):
         super().state()
