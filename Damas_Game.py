@@ -101,23 +101,23 @@ class PiesesWhiteBlack(DamasChinas):
 
         if(turn):
             
-            if(self.Raw_Postion_Late%2 != 0 and self.Column_Postion_Late%2 == 0 or self.Raw_Postion_Late%2 == 0 and self.Column_Postion_Late%2 != 0):
-                self.Board[Raw_Postion_current][Column_Postion_current] = self.Pieses_White
-                self.Board[Raw_Postion_Late][Column_Postion_Late] = '⬜'
+            if(self.Row_Postion_Late%2 != 0 and self.Column_Postion_Late%2 == 0 or self.Row_Postion_Late%2 == 0 and self.Column_Postion_Late%2 != 0):
+                self.Board[Row_Postion_Current][Column_Postion_current] = self.Pieses_White
+                self.Board[Row_Postion_Late][Column_Postion_Late] = '⬜'
 
             else:
-                if(self.Board[Raw_Postion_Late][Column_Postion_Late] != ' '):
-                    self.Board[Raw_Postion_current][Column_Postion_current] = ' '
-                    self.Board[Raw_Postion_Late][Column_Postion_Late] = self.Pieses_White
+                if(self.Board[Row_Postion_Late][Column_Postion_Late] != ' '):
+                    self.Board[Row_Postion_Current][Column_Postion_current] = ' '
+                    self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_White
                 else:
-                    self.Board[Raw_Postion_current][Column_Postion_current] = self.Pieses_White
+                    self.Board[Row_Postion_Current][Column_Postion_current] = self.Pieses_White
 
         else:    
-            if(self.Board[Raw_Postion_Late][Column_Postion_Late] != ' '):
-                    self.Board[Raw_Postion_current][Column_Postion_current] = ' '
-                    self.Board[Raw_Postion_Late][Column_Postion_Late] = self.Pieses_Black
+            if(self.Board[Row_Postion_Late][Column_Postion_Late] != ' '):
+                    self.Board[Row_Postion_Current][Column_Postion_current] = ' '
+                    self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_Black
                 else:
-                    self.Board[Raw_Postion_current][Column_Postion_current] = self.Pieses_Black
+                    self.Board[Row_Postion_Current][Column_Postion_current] = self.Pieses_Black
 
 
 def play(self):
@@ -145,8 +145,41 @@ def play(self):
             print(i)
 
             Row_Postion_current = int(input("Introduzca Fila de piesa que quieres mover: "))
+            if(Raw_current== 'A' or Raw_current== 'a'):
+                Row_Postion_Current = 1
+            if(Raw_current== 'B' or Raw_current== 'b'):
+                Row_Postion_Current = 2
+            if(Raw_current== 'C' or Raw_current== 'c'):
+                Row_Postion_Current = 3
+            if(Raw_current== 'D' or Raw_current== 'd'):
+                Row_Postion_Current = 4
+            if(Raw_current== 'E' or Raw_current== 'e'):
+                Row_Postion_Current = 5
+            if(Raw_current== 'F' or Raw_current== 'f'):
+                Row_Postion_Current = 6
+            if(Raw_current== 'G' or Raw_current== 'g'):
+                Row_Postion_Current = 7
+            if(Raw_current== 'H' or Raw_current== 'h'):
+                Row_Postion_Current = 8
             Column_Postion_current = int(input("Introduzca Columna de pieza que quieres mover: "))
             Row_Postion_Late = int(input("Introduzca Fila de pieza donde la movera: "))
+            Raw_Late = input("Enter the row of the piece where it will move: ")
+            if(Raw_Late== 'A' or Raw_Late== 'a'):
+                Row_Postion_Late = 1
+            if(Raw_Late== 'B' or Raw_Late== 'b'):
+                Row_Postion_Late = 2
+            if(Raw_Late== 'C' or Raw_Late== 'c'):
+                Row_Postion_Late = 3
+            if(Raw_Late== 'D' or Raw_Late== 'd'):
+                Row_Postion_Late = 4
+            if(Raw_Late== 'E' or Raw_Late== 'e'):
+                Row_Postion_Late = 5
+            if(Raw_Late== 'F' or Raw_Late== 'f'):
+                Row_Postion_Late = 6
+            if(Raw_Late== 'G' or Raw_Late== 'g'):
+                Row_Postion_Late = 7
+            if(Raw_Late== 'H' or Raw_Late== 'h'):
+                Row_Postion_Late = 8
             Column_Postion_Late = int(input("Introduzca Columna de pieza donde la movera: "))
 
             if(self.Board[Row_Postion_current][Column_Postion_current] == self.Pieses_White and turn and i%2 == 0):
