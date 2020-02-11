@@ -1,4 +1,4 @@
-class DamasChinas:
+class Damas:
     def __init__(self):
         self.Pieses_White = "w"
         self.Pieses_Black = "b"
@@ -28,24 +28,27 @@ class DamasChinas:
         for x in self.Board:
             print(x)
 
-class PiesesWhiteBlack(DamasChinas):
-    
+class PiesesWhiteBlack(Damas):
     def movement(self, Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,Player,turn):
         self.Row_Postion_Current = Row_Postion_Current
         self.Column_Postion_current = Column_Postion_current
         self.Row_Postion_Late = Row_Postion_Late
         self.Column_Postion_Late = Column_Postion_Late
-
         self.Player = Player
+
+
+        #     if(Value_Abs_Col == 1 and Value_Abs_Row == 1):
+
 
         if(turn):#turn white
             if(self.Row_Postion_Late%2 != 0 and self.Column_Postion_Late%2 == 0 or self.Row_Postion_Late%2 == 0 and self.Column_Postion_Late%2 != 0):
                 self.Board[Row_Postion_Current][Column_Postion_current] = self.Pieses_White
                 self.Board[Row_Postion_Late][Column_Postion_Late] = '⬜'
-
             else:
                 self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
                 self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_White
+
+                
                                 #change to queen
             if(self.Pieses_White == self.Board[8][Column_Postion_Late]):
                 self.Board[8][Column_Postion_Late] = self.Pieses_Queen_White
@@ -54,21 +57,20 @@ class PiesesWhiteBlack(DamasChinas):
             if(self.Row_Postion_Late%2 != 0 and self.Column_Postion_Late%2 == 0 or self.Row_Postion_Late%2 == 0 and self.Column_Postion_Late%2 != 0):
                 self.Board[Row_Postion_Current][Column_Postion_current] = self.Pieses_Black
                 self.Board[Row_Postion_Late][Column_Postion_Late] = '⬜'
-            else:
+            else:    
                 self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
                 self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_Black
                                 #change to queen
-                if(self.Pieses_Black == self.Board[1][Column_Postion_Late]):
-                    self.Board[1][Column_Postion_Late] = self.Pieses_Queen_Black
-
-
+            if(self.Pieses_Black == self.Board[1][Column_Postion_Late]):
+                self.Board[1][Column_Postion_Late] = self.Pieses_Queen_Black
+    
     def play(self):
-
+        
         self.state()
         turn = False
         while(True):
             Player = input("What player do you want to be? [White or Black]: ")
-            if(Player == "white" or Player == "White"):
+            if(Player == "White" or Player == "white"):
                 print("You play with White")
                 turn = True
                 break
@@ -82,11 +84,11 @@ class PiesesWhiteBlack(DamasChinas):
         i = 0
         if turn == False:
             i = 1
+            
         letter_to_number = {
             "A": 1,"a": 1,"B": 2,"b": 2,"C": 3,"c": 3,"D": 4,"d": 4,"E": 5,"e": 5,"F": 6,"f": 6,"G": 7,"g": 7,"H": 8,"h": 8,}
         while(True):
-            print(i)
-
+    
             Row_current = input("Enter the row of the piece you want to move: ")
             Row_Postion_Current = letter_to_number[Row_current]
             Column_Postion_current = int(input("Enter the column of the piece you want to move: "))
@@ -94,15 +96,21 @@ class PiesesWhiteBlack(DamasChinas):
             Row_Postion_Late = letter_to_number[Row_Late]
             Column_Postion_Late = int(input("Enter the colunm of the piece where it will move: "))
 
-            if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_White and turn and i%2 == 0):
+            Value_Abs_Row_White = abs(Row_Postion_Current - Row_Postion_Late)
+            Value_Abs_Col_White = abs(Column_Postion_current - Column_Postion_Late)
+            Value_Abs_Row_Black = Row_Postion_Current - Row_Postion_Late
+            Value_Abs_Col_Black = Column_Postion_current - Column_Postion_Late
+
+            if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_White and turn and i%2 == 0 and Value_Abs_Row_White == 1 and Value_Abs_Col_White == 1):
                 self.movement(Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,Player,turn)
                 self.presentation()
                 turn = False
                 print("shift change, Black")
                 i += 1
+
             else:
                 print(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_Black)
-                if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_Black and turn == False and i%2 != 0):
+                if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_Black and turn == False and i%2 != 0 and Value_Abs_Row_Black == -1 and Value_Abs_Col_Black == -1):
                     self.movement(Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,Player,turn)
                     self.presentation()
                     turn = True
@@ -113,5 +121,6 @@ class PiesesWhiteBlack(DamasChinas):
 
     def presentation(self):
         super().state()
+
 LPiesesWB = PiesesWhiteBlack()
 LPiesesWB.play()
