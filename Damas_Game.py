@@ -1,3 +1,4 @@
+import os
 class Damas:
     def __init__(self):
         self.Pieses_White = "w"
@@ -29,16 +30,13 @@ class Damas:
             print(x)
 
 class PiesesWhiteBlack(Damas):
-    def movement(self, Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,Player,turn):
+    turn = False
+    def movement(self, Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,turn):
         self.Row_Postion_Current = Row_Postion_Current
         self.Column_Postion_current = Column_Postion_current
         self.Row_Postion_Late = Row_Postion_Late
         self.Column_Postion_Late = Column_Postion_Late
-        self.Player = Player
-
-
-        #     if(Value_Abs_Col == 1 and Value_Abs_Row == 1):
-
+        
 
         if(turn):#turn white
             if(self.Row_Postion_Late%2 != 0 and self.Column_Postion_Late%2 == 0 or self.Row_Postion_Late%2 == 0 and self.Column_Postion_Late%2 != 0):
@@ -47,7 +45,6 @@ class PiesesWhiteBlack(Damas):
             else:
                 self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
                 self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_White
-
                 
                                 #change to queen
             if(self.Pieses_White == self.Board[8][Column_Postion_Late]):
@@ -63,64 +60,122 @@ class PiesesWhiteBlack(Damas):
                                 #change to queen
             if(self.Pieses_Black == self.Board[1][Column_Postion_Late]):
                 self.Board[1][Column_Postion_Late] = self.Pieses_Queen_Black
-    
-    def play(self):
-        
+
+    def detect(self):# encontrar piesa
+        pieseswhite = [self.Pieses_White,self.Pieses_Queen_White]
+        piesesblack = [self.Pieses_Black, self.Pieses_Queen_Black]
+        for i in range (0,9):
+            for j in range(0,9):
+                if(self.Board[i][j] in pieseswhite):
+                    return pieseswhite
+                else:
+                    return piesesblack
+
+    def see_winer(self):
+        for i in range (0,9):
+            for j in range(0,9):
+                if(self.Board[i][j] not in self.detect()):
+                    self.movement_pieses()
+        else:
+            print("End")
+            
+
+    def players(self):
         self.state()
-        turn = False
         while(True):
-            Player = input("What player do you want to be? [White or Black]: ")
-            if(Player == "White" or Player == "white"):
+            Players = ["white", "black"]
+            Player = input("What player do you want to be? [white or black]: ")
+            if(Player == Players[0]):
                 print("You play with White")
-                turn = True
-                break
-            elif(Player == "Black" or Player == "black"):
+                PiesesWhiteBlack.turn = True
+                return PiesesWhiteBlack.turn
+                
+            elif(Player == Players[1]):
                 print("You play with Black")
-                turn = False
-                break
-            else:
+                PiesesWhiteBlack.turn = False
+                return PiesesWhiteBlack.turn
+                
+            elif(Player not in Players):
                 print("Error, Does not exist")
 
-        i = 0
-        if turn == False:
-            i = 1
-            
+    def movement_pieses(self):
         letter_to_number = {
-            "A": 1,"a": 1,"B": 2,"b": 2,"C": 3,"c": 3,"D": 4,"d": 4,"E": 5,"e": 5,"F": 6,"f": 6,"G": 7,"g": 7,"H": 8,"h": 8,}
+            "A": 1,"a": 1,"B": 2,"b": 2,"C": 3,"c": 3,"D": 4,"d": 4,"E": 5,"e": 5,"F": 6,"f": 6,"G": 7,"g": 7,"H": 8,"h": 8,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8}
+        # i= self.players() if 0 else 1
+
         while(True):
-    
-            Row_current = input("Enter the row of the piece you want to move: ")
-            Row_Postion_Current = letter_to_number[Row_current]
-            Column_Postion_current = int(input("Enter the column of the piece you want to move: "))
-            Row_Late = input("Enter the row of the piece where it will move: ")
-            Row_Postion_Late = letter_to_number[Row_Late]
-            Column_Postion_Late = int(input("Enter the colunm of the piece where it will move: "))
+            
+            Row_current = input("Enter the piece you want to move: ")
+            Row_Late = input("Enter where it will move: ")
+            Row_Postion = Row_current[0]
+            Row_Postion_Current = letter_to_number[Row_Postion]
+            Column_Postion = Row_current[1]
+            Column_Postion_current = letter_to_number[Column_Postion]
+            Row_Postion2 = Row_Late[0]
+            Row_Postion_Late = letter_to_number[Row_Postion2]
+            Column_Postion2 = Row_Late[1]
+            Column_Postion_Late = letter_to_number[Column_Postion2]
 
-            Value_Abs_Row_White = abs(Row_Postion_Current - Row_Postion_Late)
-            Value_Abs_Col_White = abs(Column_Postion_current - Column_Postion_Late)
-            Value_Abs_Row_Black = Row_Postion_Current - Row_Postion_Late
-            Value_Abs_Col_Black = Column_Postion_current - Column_Postion_Late
 
-            if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_White and turn and i%2 == 0 and Value_Abs_Row_White == 1 and Value_Abs_Col_White == 1):
-                self.movement(Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,Player,turn)
-                self.presentation()
-                turn = False
-                print("shift change, Black")
-                i += 1
+            if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_White):
+
+                    # from Left Top to Right Down
+                if(self.Board[Row_Postion_Late - 1][Column_Postion_Late - 1] == self.Pieses_Black):
+                    self.Board[Row_Postion_Late - 1][Column_Postion_Late - 1] = '⬛'
+                    self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_White
+                    self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
+                
+                    # from Right Top to Left Down
+                if(self.Board[Row_Postion_Late - 1][Column_Postion_Late + 1] == self.Pieses_Black):
+                    self.Board[Row_Postion_Late - 1][Column_Postion_Late + 1] = '⬛'
+                    self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_White
+                    self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
+
+                    os.system("cls")
+                    self.presentation()
+                    PiesesWhiteBlack.turn = False
+                    print("shift change, Black")
+
+                else:
+                    self.movement(Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,PiesesWhiteBlack.turn)
+                    os.system("cls")
+                    self.presentation()
+                    PiesesWhiteBlack.turn = False
+                    print("shift change, Black")
+
 
             else:
-                print(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_Black)
-                if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_Black and turn == False and i%2 != 0 and Value_Abs_Row_Black == -1 and Value_Abs_Col_Black == -1):
-                    self.movement(Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,Player,turn)
-                    self.presentation()
-                    turn = True
-                    print("shift change, White")
-                    i += 1
+                if(self.Board[Row_Postion_Current][Column_Postion_current] == self.Pieses_Black and PiesesWhiteBlack.turn == False):
+                        # from Right to Down Left Top 
+                    if(self.Board[Row_Postion_Late + 1][Column_Postion_Late + 1] == self.Pieses_White):
+                        self.Board[Row_Postion_Late + 1][Column_Postion_Late + 1] = '⬛'
+                        self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_Black
+                        self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
+                
+                        # from Left Down to Right Top
+                    if(self.Board[Row_Postion_Late + 1][Column_Postion_Late - 1] == self.Pieses_White):
+                        self.Board[Row_Postion_Late + 1][Column_Postion_Late - 1] = '⬛'
+                        self.Board[Row_Postion_Late][Column_Postion_Late] = self.Pieses_Black
+                        self.Board[Row_Postion_Current][Column_Postion_current] = '⬛'
+
+                        os.system("cls")
+                        self.presentation()
+                        PiesesWhiteBlack.turn = True
+                        print("shift change, white")
+                    else:
+                        self.movement(Row_Postion_Current,Column_Postion_current,Row_Postion_Late,Column_Postion_Late,PiesesWhiteBlack.turn)
+                        os.system("cls")
+                        self.presentation()
+                        PiesesWhiteBlack.turn = True
+                        print("shift change, White")
+                    # i += 1
                 else:
                     print("Invalid Movement, try again")
+            
 
     def presentation(self):
         super().state()
 
 LPiesesWB = PiesesWhiteBlack()
-LPiesesWB.play()
+LPiesesWB.players()
+LPiesesWB.movement_pieses()
